@@ -8,9 +8,11 @@ Create a new directory on your computer `mkdir 'your folder name'`
 ```bash
 fork the repo
 git clone git@github.com:56aint/book_library_api_sql.git your-project-folder-name
-cd your-project-folder-name
+cd into your-project-folder-name
 npm install
 ```
+*```runinng npm install``` as above should provide all the needed peer dependencies, but the following explanation & instructions guides through how this project has been acheived, and steps to individual peer dependency installation are included too.*
+
 ## NEXT >>> Set up your database
 It is assumed that you have MYSQL running in a docker;
 Install docker with: 
@@ -75,10 +77,10 @@ npm install --save mysql2
 ```bash
   const { DB_PASSWORD, DB_NAME, DB_USER, DB_HOST, DB_PORT,} = process.env;
 ```
- -declare a function as setupDatabase
+ -declare a function named setupDatabase
  -declare a const and assign a new Sequelize() to it. Pass it the connection infomation from your ```.env```
- -call sequelize.sync({alter: true}), have the function return an empty object for now
- -and module.exports = setupDatabase()
+ -call sequelize.sync({alter: true}), have the function return an ```Empty object```
+ -and module.exports = setupDatabase() at the bottom.
 
 
 In our package.json file, there is ```prestart``` script that uses node to create database(if not already been created manually as above). Node uses 'create-database.js' file to create the database by loading the variables saved in our **'.env'** file. The variables in ```.env``` file are;

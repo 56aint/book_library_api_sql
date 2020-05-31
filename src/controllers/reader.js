@@ -4,7 +4,7 @@ const getReaders = (_, res) => {
   Reader.findAll().then(readers => {
     res.status(200).json(readers);
   });
-}
+};
 
 const createReader = (req, res) => {
   const newReader = req.body;
@@ -12,7 +12,7 @@ const createReader = (req, res) => {
   Reader
     .create(newReader)
     .then(newReaderCreated => res.status(201).json(newReaderCreated));
-}
+};
 
 const updateReader = (req, res) => {
   const { id } = req.params;
