@@ -28,3 +28,4 @@ package-lock.json
 node_modules/
 .env
 .env.testnode_modules/
+node_modules/.env/.env.test/.eslintignore/.prettierignore/package-lock.json/
