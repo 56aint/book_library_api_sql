@@ -49,33 +49,36 @@ describe('/books', () => {
         }),
         Book.create({ title: 'Death Drag', author: 'Fergy' }),
         Book.create({ title: 'Crystal', author: 'Sam' }),
+        Book.create({ title: 'Spurs', author: 'Emma' }),
       ]);
     });
 
-    describe('GET /readers', () => {
-      xit('gets all readers records', async () => {
-        const response = await request(app).get('/readers');
+    describe('GET /books', () => {
+      it('gets all the book records', async () => {
+        const response = await request(app)
+          .get('/books');
 
         expect(response.status).to.equal(200);
-        expect(response.body.length).to.equal(3);
+        expect(response.body.length).to.equal(4);
 
-        response.body.forEach((reader) => {
-          const expected = readers.find((a) => a.id === reader.id);
+        response.body.forEach((book) => {
+          const expected = books.find((a) => a.id === book.id);
 
-          expect(reader.name).to.equal(expected.name);
-          expect(reader.email).to.equal(expected.email);
+          expect(book.title).to.equal(expected.title);
+          expect(book.author).to.equal(expected.author);
         });
       });
     });
 
-    /* describe('GET /readers/:id', () => {
-      xit('gets readers record by id', async () => {
-        const reader = readers[0];
-        const response = await request(app).get(`/readers/${reader.id}`);
+    describe('GET /books/:id', () => {
+      it('gets books record by id', async () => {
+        const book = books[0];
+        const response = await request(app)
+          .get(`/books/${book.id}`);
 
         expect(response.status).to.equal(200);
-        expect(response.body.name).to.equal(reader.name);
-        expect(response.body.email).to.equal(reader.email);
+        expect(response.body.title).to.equal(book.title);
+        expect(response.body.author).to.equal(book.author);
       });
 
       xit('returns a 404 if the reader does not exist', async () => {
@@ -86,7 +89,7 @@ describe('/books', () => {
       });
     });
 
-    describe('PATCH /readers/:id', () => {
+    /* describe('PATCH /readers/:id', () => {
       xit('updates readers email by id', async () => {
         const reader = readers[0];
         const response = await request(app)
