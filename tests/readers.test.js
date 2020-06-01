@@ -43,8 +43,8 @@ describe('/readers', () => {
           email: 'future_ms_darcy@gmail.com',
           password: 'password',
         }),
-        Reader.create({ name: 'Arya Stark', email: 'vmorgul@me.com' }),
-        Reader.create({ name: 'Lyra Belacqua', email: 'darknorth123@msn.org' }),
+        Reader.create({ name: 'Arya Stark', email: 'vmorgul@me.com', password: 'password' }),
+        Reader.create({ name: 'Lyra Belacqua', email: 'darknorth123@msn.org', password: 'password' }),
       ]);
     });
 
