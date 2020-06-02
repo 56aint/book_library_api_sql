@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
-// const assert = require('assert');
 const { expect } = require('chai');
 const request = require('supertest');
-// const { Reader } = require('../src/models');
 const { Book } = require('../src/models');
 const app = require('../src/app');
 
@@ -10,10 +8,18 @@ describe('/books', () => {
   before(async () => Book.sequelize.sync());
 
   describe('with no books records in the database', () => {
+    beforeEach(async () => {
+      try {
+        await Book.sequelize.sync();
+      } catch (err) {
+        console.log(err);
+      }
+    });
     describe('POST /books', () => {
       it('creates a new book in the database', async () => {
         const response = await request(app)
-          .post('/books').send({
+          .post('/books')
+          .send({
             title: 'Life Row',
             author: 'Wenger',
             genre: 'footy',
@@ -29,6 +35,36 @@ describe('/books', () => {
         expect(newBookRecord.author).to.equal('Wenger');
         expect(newBookRecord.genre).to.equal('footy');
         expect(newBookRecord.ISBN).to.equal('1000000000');
+      });
+      xit('returns a 404 if title field is empty', async () => {
+        const response = await request(app)
+          .post('/books')
+          .send({
+            title: '',
+            author: 'Wenger',
+            genre: 'footy',
+            ISBN: '1000000000',
+          });
+        const newBookRecord = await Book.findByPk(response.body.id, {
+          raw: true,
+        });
+        expect(response.status).to.equal(404);
+        expect(newBookRecord).to.equal(null);
+      });
+      xit('returns a 404 if author field is empty', async () => {
+        const response = await request(app)
+          .post('/books')
+          .send({
+            title: 'Life Row',
+            author: '',
+            genre: 'footy',
+            ISBN: '1000000000',
+          });
+        const newBookRecord = await Book.findByPk(response.body.id, {
+          raw: true,
+        });
+        expect(response.status).to.equal(404);
+        expect(newBookRecord).to.equal(null);
       });
     });
   });

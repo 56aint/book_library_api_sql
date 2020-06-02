@@ -3,11 +3,15 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         isEmail: {
           args: [['example@someplace.somewhere']],
           msg: 'Please check your email format and try again.',
+        },
+
+        notNull: {
+          args: [true],
+          msg: 'Email field cannot be empty.',
         },
       },
     },
@@ -15,8 +19,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING({ length: 50 }),
       allowNull: false,
       validate: {
-        notEmpty: {
-          args: [[true]],
+        nameIsNull(value) {
+          if (!Boolean(value)) {
+            throw new Error('Please enter your name');
+          }
+        },
+        notNull: {
+          args: [true],
           msg: 'Please enter your name',
         },
       },
@@ -30,9 +39,11 @@ module.exports = (sequelize, DataTypes) => {
             throw new Error('Your password should not be less than 8 characters');
           }
         },
-      // len: [8, 30],
+        notNull: {
+          args: [true],
+          msg: 'Please enter your password',
+        },
       },
-
     },
   };
 

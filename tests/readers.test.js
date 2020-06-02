@@ -1,19 +1,24 @@
 /* eslint-disable no-console */
-// const assert = require('assert');
 const { expect } = require('chai');
 const request = require('supertest');
 const { Reader } = require('../src/models');
-// const { Book } = require('../src/models');
 const app = require('../src/app');
 
 describe('/readers', () => {
-  before(async () => Reader.sequelize.sync());
-
   describe('with no records in the database', () => {
+    beforeEach(async () => {
+      try {
+        await Reader.sequelize.sync();
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
     describe('POST /readers', () => {
       it('creates a new reader in the database', async () => {
         const response = await request(app)
-          .post('/readers').send({
+          .post('/readers')
+          .send({
             name: 'Elizabeth Bennet',
             email: 'future_ms_darcy@gmail.com',
             password: 'password',
@@ -27,6 +32,45 @@ describe('/readers', () => {
         expect(newReaderRecord.name).to.equal('Elizabeth Bennet');
         expect(newReaderRecord.email).to.equal('future_ms_darcy@gmail.com');
       });
+      it('returns a 404 if any of the fields is empty', async () => {
+        const response = await request(app)
+          .post('/readers')
+          .send({});
+        const newReaderRecord = await Reader.findByPk(response.body.id, {
+          raw: true,
+        });
+        expect(response.status).to.equal(404);
+        expect(newReaderRecord).to.equal(null);
+      });
+      xit('returns a 404 if the email format is wrong', async () => {
+        const response = await request(app)
+          .post('/readers')
+          .send({
+            name: 'Elizabeth Bennet',
+            email: 'future_ms_darcy#gmail.com',
+            password: 'password',
+          });
+        const newReaderRecord = await Reader.findByPk(response.body.id, {
+          raw: true,
+        });
+        expect(response.status).to.equal(404);
+        expect(newReaderRecord).to.equal(null);
+      });
+      xit('returns a 404 if the password length is wrong', async () => {
+        const response = await request(app)
+          .post('/readers')
+          .send({
+            name: 'Elizabeth Bennet',
+            email: 'future_ms_darcy@gmail.com',
+            password: 'passwor',
+          });
+        const newReaderRecord = await Reader.findByPk(response.body.id, {
+          raw: true,
+        });
+        expect(response.status).to.equal(404);
+        expect(response.body.error.length).to.equal(1);
+        expect(newReaderRecord).to.equal(null);
+      });
     });
   });
 
@@ -35,7 +79,11 @@ describe('/readers', () => {
 
     // eslint-disable-next-line no-undef
     beforeEach(async () => {
-      await Reader.destroy({ where: {} });
+      try {
+        await Reader.destroy({ where: {} });
+      } catch (err) {
+        console.log(err);
+      }
 
       readers = await Promise.all([
         Reader.create({
