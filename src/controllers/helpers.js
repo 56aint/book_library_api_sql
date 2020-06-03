@@ -10,11 +10,37 @@ const getModel = (model) => {
   return models[model];
 };
 
-const getAllItems = (res, model) => {
+
+/* const getAllItems = (res, model) => {
   const Model = getModel(model);
 
   return Model.findAll().then((allItems) => {
     res.status(200).json(allItems);
+  });
+}; */
+
+/* const getAllItems = (res, model) => {
+  const Model = getModel(model);
+
+  return Model.findAll({ attributes: { exclude: ['password'] } }).then((allItems) => {
+    res.status(200).json(allItems);
+  });
+}; */
+
+const removePassword = (storedData) => {
+  if (storedData.hasOwnProperty('password')) {
+    delete storedData.password;
+  }
+
+  return storedData;
+};
+
+const getAllItems = (res, model) => {
+  const Model = getModel(model);
+
+  return Model.findAll().then((items) => {
+    const itemsWithNoPassword = items.map((item) => removePassword(item.dataValues));
+    res.status(200).json(itemsWithNoPassword);
   });
 };
 
