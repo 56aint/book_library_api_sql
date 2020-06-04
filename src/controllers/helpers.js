@@ -27,12 +27,10 @@ const getModel = (model) => {
   });
 }; */
 
-const removePassword = (storedData) => {
-  if (storedData.hasOwnProperty('password')) {
-    delete storedData.password;
-  }
+const removePassword = (sentData) => {
+  delete sentData.password;
 
-  return storedData;
+  return sentData;
 };
 
 const getAllItems = (res, model) => {
@@ -48,7 +46,11 @@ const createItem = (res, model, item) => {
   const Model = getModel(model);
 
   return Model.create(item)
-    .then((newItemCreated) => res.status(201).json(newItemCreated))
+    .then((newItemCreated) => {
+      const itemPopPassword = newItemCreated;
+      delete itemPopPassword.dataValues.password;
+      res.status(201).json(newItemCreated);
+    })
     .catch((error) => {
       const errorMessages = error.errors.map((e) => e.message);
 
@@ -63,7 +65,8 @@ const updateItem = (res, model, item, id) => {
     if (!recordsUpdated) {
       res.status(404).json(get404Error(model));
     } else {
-      getModel(model).findByPk(id).then((updatedItem) => {
+      Model.findByPk(id).then((updatedItem) => {
+        delete updatedItem.dataValues.password;
         res.status(200).json(updatedItem);
       });
     }
