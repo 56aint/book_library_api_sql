@@ -80,6 +80,7 @@ const getItemById = (res, model, id) => {
     if (!item) {
       res.status(404).json(get404Error(model));
     } else {
+      delete item.dataValues.password;
       res.status(200).json(item);
     }
   });

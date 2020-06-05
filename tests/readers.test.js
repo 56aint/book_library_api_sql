@@ -15,7 +15,6 @@ describe('/readers', () => {
   });
 
   describe('with no records in the database', () => {
-
     describe('POST /readers', () => {
       it('creates a new reader in the database', async () => {
         const response = await request(app)
@@ -23,7 +22,7 @@ describe('/readers', () => {
           .send({
             name: 'Elizabeth Bennet',
             email: 'future_ms_darcy@gmail.com',
-            password: 'password',
+            password: 'EpostPassword',
           });
         const newReaderRecord = await Reader.findByPk(response.body.id, {
           raw: true,
@@ -34,7 +33,7 @@ describe('/readers', () => {
         expect(newReaderRecord.name).to.equal('Elizabeth Bennet');
         expect(response.body.email).to.equal('future_ms_darcy@gmail.com');
         expect(newReaderRecord.email).to.equal('future_ms_darcy@gmail.com');
-        expect(newReaderRecord.password).to.equal('password');
+        expect(newReaderRecord.password).to.equal('EpostPassword');
         expect(response.body.password).to.equal(undefined);
         console.log(response.body.password, ' is the created passowrd');
       });
@@ -97,10 +96,10 @@ describe('/readers', () => {
         Reader.create({
           name: 'Elizabeth Bennet',
           email: 'future_ms_darcy@gmail.com',
-          password: 'password',
+          password: 'Epassword',
         }),
-        Reader.create({ name: 'Arya Stark', email: 'vmorgul@me.com', password: 'password' }),
-        Reader.create({ name: 'Lyra Belacqua', email: 'darknorth123@msn.org', password: 'password' }),
+        Reader.create({ name: 'Arya Stark', email: 'vmorgul@me.com', password: 'Vpassword' }),
+        Reader.create({ name: 'Lyra Belacqua', email: 'darknorth123@msn.org', password: 'dPassword' }),
       ]);
     });
 
@@ -116,8 +115,8 @@ describe('/readers', () => {
 
           expect(reader.name).to.equal(expected.name);
           expect(reader.email).to.equal(expected.email);
-          expect(expected.password).to.equal('password');
           expect(reader.password).to.equal(undefined);
+          console.log(expected.password);
           console.log(expected.password, 'is the expected password');
           console.log(reader.password, 'is the reader password');
           // console.log(expected);
@@ -128,14 +127,16 @@ describe('/readers', () => {
     describe('GET /readers/:id', () => {
       it('gets readers record by id', async () => {
         const reader = readers[0];
-        const response = await request(app).get(`/readers/${reader.id}`);
+        const response = await request(app)
+          .get(`/readers/${reader.id}`);
 
         expect(response.status).to.equal(200);
         expect(response.body.name).to.equal(reader.name);
         expect(response.body.email).to.equal(reader.email);
         expect(response.body.password).to.equal(undefined);
-        console.log(response.body.password, '***');
-        console.log(reader.body.password);
+        console.log(reader.password, 'is the sent reader password');
+        console.log(response.body.password, 'is the response password');
+        // console.log(response.body.password, '***');
       });
 
       it('returns a 404 if the reader does not exist', async () => {
@@ -159,10 +160,9 @@ describe('/readers', () => {
 
         expect(response.status).to.equal(200);
         expect(updatedReaderRecord.email).to.equal('miss_e_bennet@gmail.com');
-        // expect(updatedReaderRecord.password).to.equal(undefined);
-        console.log(updatedReaderRecord.password, 'i am the update password');
-        console.log(reader.password, 'i am the reader password');
-        console.log(response.body.password, 'response password');
+        console.log(reader.password, ': i am the reader 1st password');
+        console.log(updatedReaderRecord.password, ': is the update password');
+        console.log(response.body.password, ': is the response password');
       });
 
       it('returns a 404 if the reader does not exist', async () => {
