@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const schema = {
     title: {
-      type: DataTypes.STRING({ length: 50 }),
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: {
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    author: {
+    /* author: {
       type: DataTypes.STRING({ length: 50 }),
       allowNull: false,
       validate: {
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Please give an Author',
         },
       },
-    },
+    }, */
     // genre: DataTypes.STRING,
     ISBN: DataTypes.STRING,
   };

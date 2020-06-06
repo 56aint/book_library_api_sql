@@ -116,9 +116,9 @@ describe('/readers', () => {
           expect(reader.name).to.equal(expected.name);
           expect(reader.email).to.equal(expected.email);
           expect(reader.password).to.equal(undefined);
-          console.log(expected.password);
-          console.log(expected.password, 'is the expected password');
-          console.log(reader.password, 'is the reader password');
+          //console.log(expected.password);
+          //console.log(expected.password, 'is the expected password');
+          //console.log(reader.password, 'is the reader password');
           // console.log(expected);
         });
       });
@@ -134,8 +134,8 @@ describe('/readers', () => {
         expect(response.body.name).to.equal(reader.name);
         expect(response.body.email).to.equal(reader.email);
         expect(response.body.password).to.equal(undefined);
-        console.log(reader.password, 'is the sent reader password');
-        console.log(response.body.password, 'is the response password');
+        //console.log(reader.password, 'is the sent reader password');
+        //console.log(response.body.password, 'is the response password');
         // console.log(response.body.password, '***');
       });
 
@@ -160,9 +160,9 @@ describe('/readers', () => {
 
         expect(response.status).to.equal(200);
         expect(updatedReaderRecord.email).to.equal('miss_e_bennet@gmail.com');
-        console.log(reader.password, ': i am the reader 1st password');
-        console.log(updatedReaderRecord.password, ': is the update password');
-        console.log(response.body.password, ': is the response password');
+        //console.log(reader.password, ': i am the reader 1st password');
+        //console.log(updatedReaderRecord.password, ': is the update password');
+        //console.log(response.body.password, ': is the response password');
       });
 
       it('returns a 404 if the reader does not exist', async () => {
