@@ -1,4 +1,4 @@
-const { Book, Reader } = require('../models');
+const { Book, Reader, Genre } = require('../models');
 
 const get404Error = (model) => ({ error: `The ${model} could not be found.` });
 
@@ -6,26 +6,10 @@ const getModel = (model) => {
   const models = {
     book: Book,
     reader: Reader,
+    genre: Genre,
   };
   return models[model];
 };
-
-
-/* const getAllItems = (res, model) => {
-  const Model = getModel(model);
-
-  return Model.findAll().then((allItems) => {
-    res.status(200).json(allItems);
-  });
-}; */
-
-/* const getAllItems = (res, model) => {
-  const Model = getModel(model);
-
-  return Model.findAll({ attributes: { exclude: ['password'] } }).then((allItems) => {
-    res.status(200).json(allItems);
-  });
-}; */
 
 const removePassword = (sentData) => {
   delete sentData.password;
@@ -52,9 +36,9 @@ const createItem = (res, model, item) => {
       res.status(201).json(newItemCreated);
     })
     .catch((error) => {
-      const errorMessages = error.errors.map((e) => e.message);
+      const errorMessages = error.errors.map((err) => err.message);
 
-      return res.status(400).json({ errors: errorMessages });
+      res.status(400).json({ errors: errorMessages });
     });
 };
 
@@ -76,7 +60,7 @@ const updateItem = (res, model, item, id) => {
 const getItemById = (res, model, id) => {
   const Model = getModel(model);
 
-  return Model.findByPk(id).then((item) => {
+  return Model.findByPk(id, { includes: Genre }).then((item) => {
     if (!item) {
       res.status(404).json(get404Error(model));
     } else {

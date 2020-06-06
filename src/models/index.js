@@ -2,6 +2,8 @@
 const Sequelize = require('sequelize');
 const ReaderModel = require('./reader');
 const BookModel = require('./book.js');
+const GenreModel = require('./genre.js');
+const AuthorModel = require('./author.js');
 
 const {
   DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT,
@@ -19,10 +21,20 @@ const setupDatabase = () => {
 
   const Book = BookModel(sequelize, Sequelize);
 
+  const Genre = GenreModel(sequelize, Sequelize);
+
+  const Author = AuthorModel(sequelize, Sequelize);
+
+  Genre.hasMany(Book);
+  Book.belongsTo(Genre);
+
+
   sequelize.sync({ alter: true });
   return {
     Reader,
     Book,
+    Genre,
+    Author,
   };
 };
 

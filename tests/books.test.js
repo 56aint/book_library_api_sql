@@ -2,6 +2,7 @@
 const { expect } = require('chai');
 const request = require('supertest');
 const { Book } = require('../src/models');
+const { Genre } = require('../src/models');
 const app = require('../src/app');
 
 describe('/books', () => {
@@ -22,7 +23,7 @@ describe('/books', () => {
           .send({
             title: 'Life Row',
             author: 'Wenger',
-            genre: 'footy',
+            // genre: 'footy',
             ISBN: '1000000000',
           });
         const newBookRecord = await Book.findByPk(response.body.id, {
@@ -33,7 +34,7 @@ describe('/books', () => {
         expect(response.body.title).to.equal('Life Row');
         expect(newBookRecord.title).to.equal('Life Row');
         expect(newBookRecord.author).to.equal('Wenger');
-        expect(newBookRecord.genre).to.equal('footy');
+        // expect(newBookRecord.genre).to.equal('footy');
         expect(newBookRecord.ISBN).to.equal('1000000000');
       });
       xit('returns a 404 if title field is empty', async () => {
@@ -102,6 +103,7 @@ describe('/books', () => {
 
           expect(book.title).to.equal(expected.title);
           expect(book.author).to.equal(expected.author);
+          console.log(book);
         });
       });
     });

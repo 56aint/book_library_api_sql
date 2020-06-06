@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         notNull: {
           args: [true],
-          msg: 'Please provide a title for your book',
+          msg: 'Please give your book a title',
         },
       },
     },
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    genre: DataTypes.STRING,
+    // genre: DataTypes.STRING,
     ISBN: DataTypes.STRING,
   };
 
