@@ -1,6 +1,6 @@
 // src/models/indexjs
 const Sequelize = require('sequelize');
-const ReaderModel = require('./reader');
+const ReaderModel = require('./reader.js');
 const BookModel = require('./book.js');
 const GenreModel = require('./genre.js');
 const AuthorModel = require('./author.js');

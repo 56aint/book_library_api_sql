@@ -27,13 +27,14 @@ describe('/authors', () => {
         });
         expect(response.status).to.equal(201);
         expect(response.body.name).to.equal('David Baldacci');
+        console.log(newAuthorRecord);
         expect(newAuthorRecord.name).to.equal('David Baldacci');
       });
-      xit('returns a 400 if genre field is not unique', async () => {
+      /* xit('returns a 400 if author field is not unique', async () => {
         const response = await request(app)
           .post('/authors')
           .send({
-            author: 'Romance',
+            name: 'David Baldacci',
           });
         const newAuthorRecord = await Author.findByPk(response.body.id, {
           raw: true,
@@ -42,12 +43,12 @@ describe('/authors', () => {
         expect(response.status).to.equal(400);
         expect(response.body.errors.length).to.equal(1);
         expect(newAuthorRecord).to.equal(null);
-      });
-      xit('returns a 400 if author field is an empty string', async () => {
+      }); */
+      it('returns a 400 if author field is an empty string', async () => {
         const response = await request(app)
           .post('/authors')
           .send({
-            author: '',
+            name: '',
           });
         const newAuthorRecord = await Author.findByPk(response.body.id, {
           raw: true,
@@ -56,7 +57,7 @@ describe('/authors', () => {
         expect(response.body.errors.length).to.equal(1);
         expect(newAuthorRecord).to.equal(null);
       });
-      xit('returns a 400 error if author is empty', async () => {
+      it('returns a 400 error if author is empty', async () => {
         const response = await request(app)
           .post('/authors')
           .send({});
@@ -77,15 +78,15 @@ describe('/authors', () => {
 
       authors = await Promise.all([
         Author.create({
-          genre: 'Horror',
+          name: 'Carter Brown',
         }),
-        Author.create({ author: 'Thriller' }),
-        Author.create({ author: 'Crime' }),
+        Author.create({ name: 'James Patterson' }),
+        Author.create({ name: 'John Grisham' }),
       ]);
     });
 
     describe('GET /authors', () => {
-      xit('gets all authors records', async () => {
+      it('gets all authors records', async () => {
         const response = await request(app)
           .get('/authors');
 
@@ -101,7 +102,7 @@ describe('/authors', () => {
       });
     });
     describe('GET /authors/:id', () => {
-      xit('gets authors record by id', async () => {
+      it('gets authors record by id', async () => {
         const author = authors[0];
         const response = await request(app)
           .get(`/authors/${author.id}`);
@@ -109,44 +110,46 @@ describe('/authors', () => {
         expect(response.status).to.equal(200);
         expect(response.body.name).to.equal(author.name);
         console.log(author.name, ':this is the first author created');
-        // console.log(response.body.length);
       });
 
-      xit('returns a 404 if the author does not exist', async () => {
+      it('returns a 404 if the author does not exist', async () => {
         const response = await request(app)
           .get('/authors/12345');
 
         expect(response.status).to.equal(404);
-        expect(response.body.error).to.equal('The genre could not be found.');
+        expect(response.body.error).to.equal('The author could not be found.');
       });
     });
     describe('PATCH /authors/:id', () => {
-      xit('updates authors by id', async () => {
+      it('updates authors by id', async () => {
         const author = authors[0];
         const response = await request(app)
-          .patch(`/genres/${author.id}`)
-          .send({ author: 'Thrilling Thriller' });
+          .patch(`/authors/${author.id}`)
+          .send({
+            name: 'Peter James',
+          });
         const updatedAuthorRecord = await Author.findByPk(author.id, {
           raw: true,
         });
 
         expect(response.status).to.equal(200);
-        expect(updatedAuthorRecord.name).to.equal('Thrilling Thriller');
-        // console.log(genre.genre);
+        expect(updatedAuthorRecord.name).to.equal('Peter James');
       });
 
-      xit('returns a 404 if the author does not exist', async () => {
+      it('returns a 404 if the author does not exist', async () => {
         const response = await request(app)
           .patch('/authors/12345')
-          .send({ author: 'new_author' });
+          .send({
+            author: 'new_author',
+          });
 
         expect(response.status).to.equal(404);
-        expect(response.body.error).to.equal('The genre could not be found.');
+        expect(response.body.error).to.equal('The author could not be found.');
         console.log(response.body.error);
       });
     });
     describe('DELETE /autors/:id', () => {
-      xit('deletes author record by id', async () => {
+      it('deletes author record by id', async () => {
         const author = authors[0];
         const response = await request(app)
           .delete(`/authors/${author.id}`);
@@ -156,11 +159,11 @@ describe('/authors', () => {
         expect(deletedAuthor).to.equal(null);
       });
 
-      xit('returns a 404 if the author does not exist', async () => {
+      it('returns a 404 if the author does not exist', async () => {
         const response = await request(app)
           .delete('/authors/12345');
         expect(response.status).to.equal(404);
-        expect(response.body.error).to.equal('The genre could not be found.');
+        expect(response.body.error).to.equal('The author could not be found.');
       });
     });
   });

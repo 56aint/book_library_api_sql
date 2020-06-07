@@ -8,8 +8,12 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: {
           args: [true],
-          msg: 'Please give a unique Author',
+          msg: 'Please give an Author',
         },
+        /*unique: {
+          args: [true],
+          msg: 'Please give a unique Author',
+        },*/
         notEmpty: {
           args: [true],
           msg: 'Author field can not be empty',
