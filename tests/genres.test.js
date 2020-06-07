@@ -4,6 +4,15 @@ const { Genre } = require('../src/models');
 const app = require('../src/app');
 
 describe('/genres', () => {
+  // before(async () => Reader.sequelize.sync());
+  beforeEach(async () => {
+    try {
+      await Genre.sequelize.sync();
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
   describe('with no genre records in the database', () => {
     describe('POST /genres', () => {
       it('creates a new genre in the database', async () => {
