@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: {
           args: [true],
-          msg: 'Please provide a unique genre',
+          msg: 'Please provide a genre',
         },
         notEmpty: {
           args: [true],

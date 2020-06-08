@@ -1,7 +1,7 @@
 // src/models/author.js
 module.exports = (sequelize, DataTypes) => {
   const schema = {
-    name: {
+    author: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
@@ -10,10 +10,10 @@ module.exports = (sequelize, DataTypes) => {
           args: [true],
           msg: 'Please give an Author',
         },
-        /*unique: {
+        /* unique: {
           args: [true],
           msg: 'Please give a unique Author',
-        },*/
+        }, */
         notEmpty: {
           args: [true],
           msg: 'Author field can not be empty',

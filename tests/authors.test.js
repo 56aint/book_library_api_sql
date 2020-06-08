@@ -20,15 +20,15 @@ describe('/authors', () => {
         const response = await request(app)
           .post('/authors')
           .send({
-            name: 'David Baldacci',
+            author: 'David Baldacci',
           });
         const newAuthorRecord = await Author.findByPk(response.body.id, {
           raw: true,
         });
         expect(response.status).to.equal(201);
-        expect(response.body.name).to.equal('David Baldacci');
+        expect(response.body.author).to.equal('David Baldacci');
         console.log(newAuthorRecord);
-        expect(newAuthorRecord.name).to.equal('David Baldacci');
+        expect(newAuthorRecord.author).to.equal('David Baldacci');
       });
       /* xit('returns a 400 if author field is not unique', async () => {
         const response = await request(app)
@@ -48,7 +48,7 @@ describe('/authors', () => {
         const response = await request(app)
           .post('/authors')
           .send({
-            name: '',
+            author: '',
           });
         const newAuthorRecord = await Author.findByPk(response.body.id, {
           raw: true,
@@ -78,10 +78,10 @@ describe('/authors', () => {
 
       authors = await Promise.all([
         Author.create({
-          name: 'Carter Brown',
+          author: 'Carter Brown',
         }),
-        Author.create({ name: 'James Patterson' }),
-        Author.create({ name: 'John Grisham' }),
+        Author.create({ author: 'James Patterson' }),
+        Author.create({ author: 'John Grisham' }),
       ]);
     });
 
@@ -96,7 +96,7 @@ describe('/authors', () => {
         response.body.forEach((author) => {
           const expected = authors.find((a) => a.id === author.id);
 
-          expect(author.name).to.equal(expected.name);
+          expect(author.author).to.equal(expected.author);
           console.log(author);
         });
       });
@@ -108,8 +108,8 @@ describe('/authors', () => {
           .get(`/authors/${author.id}`);
 
         expect(response.status).to.equal(200);
-        expect(response.body.name).to.equal(author.name);
-        console.log(author.name, ':this is the first author created');
+        expect(response.body.author).to.equal(author.author);
+        console.log(author.author, ':this is the first author created');
       });
 
       it('returns a 404 if the author does not exist', async () => {
@@ -126,14 +126,14 @@ describe('/authors', () => {
         const response = await request(app)
           .patch(`/authors/${author.id}`)
           .send({
-            name: 'Peter James',
+            author: 'Peter James',
           });
         const updatedAuthorRecord = await Author.findByPk(author.id, {
           raw: true,
         });
 
         expect(response.status).to.equal(200);
-        expect(updatedAuthorRecord.name).to.equal('Peter James');
+        expect(updatedAuthorRecord.author).to.equal('Peter James');
       });
 
       it('returns a 404 if the author does not exist', async () => {
