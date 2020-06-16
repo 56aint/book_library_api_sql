@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const readerController = require('../controllers/reader');
+const readerController = require('../controllers/reader.js');
 
 router
   .route('/')
