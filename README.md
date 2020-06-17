@@ -8,9 +8,11 @@ Create a new directory on your computer `mkdir 'your folder name'`
 ```bash
 fork the repo
 git clone git@github.com:56aint/book_library_api_sql.git your-project-folder-name
-cd your-project-folder-name
+cd into your-project-folder-name
 npm install
 ```
+*```runinng npm install``` as above should provide all the needed peer dependencies, but the following explanation & instructions guides through how this project has been acheived, and steps to individual peer dependency installation are included too.*
+
 ## NEXT >>> Set up your database
 It is assumed that you have MYSQL running in a docker;
 Install docker with: 
@@ -75,10 +77,10 @@ npm install --save mysql2
 ```bash
   const { DB_PASSWORD, DB_NAME, DB_USER, DB_HOST, DB_PORT,} = process.env;
 ```
- -declare a function as setupDatabase
+ -declare a function named setupDatabase
  -declare a const and assign a new Sequelize() to it. Pass it the connection infomation from your ```.env```
- -call sequelize.sync({alter: true}), have the function return an empty object for now
- -and module.exports = setupDatabase()
+ -call sequelize.sync({alter: true}), have the function return an ```Empty object```
+ -and module.exports = setupDatabase() at the bottom.
 
 
 In our package.json file, there is ```prestart``` script that uses node to create database(if not already been created manually as above). Node uses 'create-database.js' file to create the database by loading the variables saved in our **'.env'** file. The variables in ```.env``` file are;
@@ -121,3 +123,50 @@ I terminated all the running processes with ```killall node``` and everything wa
 ```
 -In our package.json, there is a pretest script with the command: ```node scripts/create-database.js test```. The test option at the end of the command tells the script to load the variables from .env.test instead of .env.
 -There is also a posttest script in our package.json with the command: ```node scripts/drop-database.js```. This will use **```drop-database.js```** file in our **scripts** folder to delete our test database after our tests have finished running.
+
+**Reminder** In src folder, create these folders in order listed: Model, Controller, Routes, tests. The first folder will be required in the next, and so on.
+Also, associations are made in Sequelize setup file e.g. in /src/models/index.js
+
+## Interacting With This API
+Some of us do not have the time to follow the above steps. You can interact with this API by sending Create, Get, Update or Delete (CRUD) requests. e.g
+ -Create: 
+ POST /authors
+ {
+	"author": "David Baldacci",
+}
+-POST /genres
+{
+	"genre": "Thriller"
+}
+-POST /books
+{
+	"title": "Memory Man",
+	"AuthorId": 1,
+	"GenreId": 1
+}
+
+-Read: GET /books
+[
+    {
+        "id": 1,
+        "title": "Memory Man",
+        "ISBN": "123-4-56-789000-0",
+        "createdAt": "2020-06-08T12:59:32.000Z",
+        "updatedAt": "2020-06-08T13:14:17.000Z",
+        "GenreId": 1,
+        "AuthorId": 1,
+        "Genre": {
+            "id": 1,
+            "genre": "Thriller",
+            "createdAt": "2020-06-08T12:57:05.000Z",
+            "updatedAt": "2020-06-08T12:57:05.000Z"
+        },
+        "Author": {
+            "id": 1,
+            "author": "David Baldacci",
+            "createdAt": "2020-06-08T13:04:55.000Z",
+            "updatedAt": "2020-06-08T13:04:55.000Z"
+        }
+    }
+]
+- You can also Update and Delete
